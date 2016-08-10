@@ -33,14 +33,11 @@ namespace Getly
             }
         }
 
-        private static List<string> GetLinks(string message) // TODO: move to util class
+        private static List<string> GetLinks(string text) // TODO: move to util class
         {
             var urlRx = new Regex(@"((https?|ftp|file)\://|www.)[A-Za-z0-9\.\-]+(/[A-Za-z0-9\?\&\=;\+!'\(\)\*\-\._~%]*)*", RegexOptions.IgnoreCase);
-            var matches = urlRx.Matches(message);
-            var list = new List<string>();
-            foreach (Match match in matches)
-                list.Add(match.Value);
-            return list;
+            var matches = urlRx.Matches(text);
+            return (from Match match in matches select match.Value).ToList();
         }
 
         private void Cleanup(object sender, ExitEventArgs e)
@@ -71,7 +68,7 @@ namespace Getly
 
         private void Shutdown(object sender, EventArgs e)
         {
-            Current.Shutdown();
+            Shutdown();
         }
     }
 }
